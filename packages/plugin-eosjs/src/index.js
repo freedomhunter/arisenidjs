@@ -4,12 +4,12 @@ import {
 	Blockchains,
 	Network,
 	SocketService
-} from '@scatterjs/core';
+} from '@arisenidjs/core';
 
 let socketService = SocketService;
 const proxy = (dummy, handler) => new Proxy(dummy, handler);
 
-export default class ScatterEOS extends Plugin {
+export default class ArisenidEOS extends Plugin {
 
     constructor(){
         super(Blockchains.EOS, PluginTypes.BLOCKCHAIN_SUPPORT);
@@ -101,5 +101,5 @@ export default class ScatterEOS extends Plugin {
 }
 
 if(typeof window !== 'undefined') {
-	window.ScatterEOS = ScatterEOS;
+	window.ArisenidEOS = ArisenidEOS;
 }

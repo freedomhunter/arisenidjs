@@ -4,8 +4,8 @@ import Plugin from "../plugins/Plugin";
 
 let isAvailable = false;
 if(typeof window !== 'undefined' && typeof document !== 'undefined') {
-	if(typeof window.scatter !== 'undefined') isAvailable = true;
-	else document.addEventListener('scatterLoaded', () => isAvailable = true);
+	if(typeof window.arisenid !== 'undefined') isAvailable = true;
+	else document.addEventListener('arisenidLoaded', () => isAvailable = true);
 }
 
 const pollExistence = async (resolver = null, tries = 0) => {
@@ -40,23 +40,23 @@ export default class LegacyInjection extends Plugin {
 		const network = this.context.network;
 
 		if(network){
-			const getId = window.scatter.getIdentity.bind(window.scatter);
-			const useIdentity = window.scatter.useIdentity.bind(window.scatter);
-			window.scatter.getIdentity = fields => getId(fields ? fields : {accounts:[network]}).then(id => {
+			const getId = window.arisenid.getIdentity.bind(window.arisenid);
+			const useIdentity = window.arisenid.useIdentity.bind(window.arisenid);
+			window.arisenid.getIdentity = fields => getId(fields ? fields : {accounts:[network]}).then(id => {
 				this.holderFns.get().identity = id;
 				useIdentity(id);
 				return id;
 			});
 
-			const suggest = window.scatter.suggestNetwork.bind(window.scatter);
-			window.scatter.suggestNetwork = net => suggest(net ? net : network);
+			const suggest = window.arisenid.suggestNetwork.bind(window.arisenid);
+			window.arisenid.suggestNetwork = net => suggest(net ? net : network);
 		}
 
 		if(this.holderFns.get().wallet === this.name){
-			window.scatter.wallet = this.name;
+			window.arisenid.wallet = this.name;
 		}
 
-		this.holderFns.set(window.scatter);
+		this.holderFns.set(window.arisenid);
 		this.context = this.holderFns.get();
 
 		return true;

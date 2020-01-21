@@ -8,8 +8,8 @@ import device from '../util/Device';
 
 
 
-const WEB_HOST = `https://relay.get-scatter.com:443`;
-const SOCKET_HOST = `relaysock.get-scatter.com:443`;
+const WEB_HOST = `https://relay.get-arisenid.com:443`;
+const SOCKET_HOST = `relaysock.get-arisenid.com:443`;
 
 export default class RelaySocket extends Plugin {
 	constructor(context, holderFns){

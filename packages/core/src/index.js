@@ -35,7 +35,7 @@ class Index {
 
 	loadPlugin(plugin){
 		const noIdFunc = () => { if(!holderFns.get().identity) throw new Error('No Identity') };
-		if(!plugin.isValid()) throw new Error(`${plugin.name} doesn't seem to be a valid ScatterJS plugin.`);
+		if(!plugin.isValid()) throw new Error(`${plugin.name} doesn't seem to be a valid ArisenidJS plugin.`);
 
 		PluginRepository.loadPlugin(plugin);
 
@@ -95,18 +95,18 @@ class Index {
 
 
 class Holder {
-    constructor(_scatter){
-        this.scatter = _scatter;
+    constructor(_arisenid){
+        this.arisenid = _arisenid;
     }
 
 	plugins(...plugins) {
-		if (!this.scatter.isExtension) {
-			plugins.map(plugin => this.scatter.loadPlugin(plugin));
+		if (!this.arisenid.isExtension) {
+			plugins.map(plugin => this.arisenid.loadPlugin(plugin));
 		}
 	}
 
 	connect(...params){
-    	return this.scatter.connect(...params);
+    	return this.arisenid.connect(...params);
 	}
 
 	catchAll(...params){
@@ -118,12 +118,12 @@ class Holder {
 let holder = new Proxy(new Holder(new Index()), {
 	get(target,name) {
 		if(typeof target[name] !== 'undefined') return target[name];
-		return target.scatter[name];
+		return target.arisenid[name];
 	}
 });
-holderFns.set = s => holder.scatter = s;
-holderFns.get = () => holder.scatter;
-if(typeof window !== 'undefined') window.ScatterJS = holder;
+holderFns.set = s => holder.arisenid = s;
+holderFns.get = () => holder.arisenid;
+if(typeof window !== 'undefined') window.ArisenidJS = holder;
 
 
 holder.Plugin = Plugin;

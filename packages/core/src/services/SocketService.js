@@ -51,14 +51,14 @@ export default class SocketService {
 	        const setupSocket = () => {
 		        this.socket.onmessage = msg => {
 			        // Handshaking/Upgrading
-			        if(msg.data.indexOf('42/scatter') === -1) return false;
+			        if(msg.data.indexOf('42/arisenid') === -1) return false;
 
 
 			        // Real message
-			        const [type, data] = JSON.parse(msg.data.replace('42/scatter,', ''));
+			        const [type, data] = JSON.parse(msg.data.replace('42/arisenid,', ''));
 
 			        if(type === 'pong') return;
-			        if(type === 'ping') return this.socket.send(`42/scatter,["pong"]`);
+			        if(type === 'ping') return this.socket.send(`42/arisenid,["pong"]`);
 
 			        switch(type){
 				        case 'paired': return msg_paired(data);
@@ -117,13 +117,13 @@ export default class SocketService {
 
 	        const getHostname = (port, ssl) => {
 		        if(socketHost) return socketHost;
-		        return ssl ? `local.get-scatter.com:${port}` : `127.0.0.1:${port}`;
+		        return ssl ? `local.get-arisenid.com:${port}` : `127.0.0.1:${port}`;
 	        }
 
 	        const ports = await new Promise(async (portResolver) => {
 		        if(socketHost) return portResolver([50006]);
 
-		        const checkPort = (host, cb) => fetch(host).then(r => r.text()).then(r => cb(r === 'scatter')).catch(() => cb(false));
+		        const checkPort = (host, cb) => fetch(host).then(r => r.text()).then(r => cb(r === 'arisenid')).catch(() => cb(false));
 
 		        let startingPort = 50005;
 		        let availablePorts = [];
@@ -205,7 +205,7 @@ export default class SocketService {
             if(request.type === 'identityFromPermissions' && !this.paired) return resolve(false);
 
 	        this.pair().then(() => {
-                if(!this.paired) return reject({code:'not_paired', message:'The user did not allow this app to connect to their Scatter'});
+                if(!this.paired) return reject({code:'not_paired', message:'The user did not allow this app to connect to their Arisenid'});
 
                 // Request ID used for resolving promises
                 request.id = random();
@@ -243,8 +243,8 @@ export default class SocketService {
 	}
 
 	send(type = null, data = null){
-		if(type === null && data === null) this.socket.send('40/scatter');
-		else this.socket.send('42/scatter,' + JSON.stringify([type, Object.assign(data, {device, uuid:this.uuid})]));
+		if(type === null && data === null) this.socket.send('40/arisenid');
+		else this.socket.send('42/arisenid,' + JSON.stringify([type, Object.assign(data, {device, uuid:this.uuid})]));
 	}
 
 

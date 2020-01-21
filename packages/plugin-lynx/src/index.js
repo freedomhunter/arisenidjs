@@ -1,4 +1,4 @@
-import {Blockchains, Network, Plugin, PluginTypes, SocketService, WALLET_METHODS} from '@scatterjs/core';
+import {Blockchains, Network, Plugin, PluginTypes, SocketService, WALLET_METHODS} from '@arisenidjs/core';
 
 let network;
 
@@ -35,7 +35,7 @@ const sha256 = async data => {
 }
 
 
-export default class ScatterLynx extends Plugin {
+export default class ArisenidLynx extends Plugin {
 
     constructor(eosjs){
 	    super(Blockchains.EOS, PluginTypes.WALLET_SUPPORT);
@@ -209,5 +209,5 @@ export default class ScatterLynx extends Plugin {
 }
 
 if(typeof window !== 'undefined') {
-	window.ScatterLynx = ScatterLynx;
+	window.ArisenidLynx = ArisenidLynx;
 }

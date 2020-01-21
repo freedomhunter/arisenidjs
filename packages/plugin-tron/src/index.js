@@ -4,11 +4,11 @@ import {
 	Blockchains,
 	Network,
 	SocketService
-} from '@scatterjs/core';
+} from '@arisenidjs/core';
 let socketService = SocketService;
 const proxy = (dummy, handler) => new Proxy(dummy, handler);
 
-export default class ScatterTron extends Plugin {
+export default class ArisenidTron extends Plugin {
 
     constructor(){
         super(Blockchains.TRX, PluginTypes.BLOCKCHAIN_SUPPORT)
@@ -91,5 +91,5 @@ export default class ScatterTron extends Plugin {
 }
 
 if(typeof window !== 'undefined') {
-    window.ScatterTron = ScatterTron;
+    window.ArisenidTron = ArisenidTron;
 }

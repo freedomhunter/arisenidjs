@@ -1,1 +1,1 @@
-# ScatterJS Core
+# ArisenidJS Core

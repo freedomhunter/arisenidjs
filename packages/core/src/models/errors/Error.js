@@ -19,7 +19,7 @@ export default class Error {
     }
 
     static locked(){
-        return new Error(ErrorTypes.LOCKED, "The user's Scatter is locked. They have been notified and should unlock before continuing.")
+        return new Error(ErrorTypes.LOCKED, "The user's Arisenid is locked. They have been notified and should unlock before continuing.")
     }
 
     static maliciousEvent(){
@@ -31,7 +31,7 @@ export default class Error {
     }
 
     static requiresUpgrade(){
-        return new Error(ErrorTypes.UPGRADE_REQUIRED, "The required version is newer than the User's Scatter", ErrorCodes.UPGRADE_REQUIRED)
+        return new Error(ErrorTypes.UPGRADE_REQUIRED, "The required version is newer than the User's Arisenid", ErrorCodes.UPGRADE_REQUIRED)
     }
 
     static noNetwork(){
@@ -41,7 +41,7 @@ export default class Error {
     static usedKeyProvider(){
         return new Error(
             ErrorTypes.MALICIOUS,
-            "Do not use a `keyProvider` with a Scatter. Use a `signProvider` and return only signatures to this object. A malicious person could retrieve your keys otherwise.",
+            "Do not use a `keyProvider` with a Arisenid. Use a `signProvider` and return only signatures to this object. A malicious person could retrieve your keys otherwise.",
             ErrorCodes.NO_SIGNATURE
         )
     }
