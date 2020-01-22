@@ -9,7 +9,7 @@
     <script src='assets/eosjs-api.js'></script>
     <script src='assets/eosjs-jsonrpc.js'></script>
     <script src='assets/eosjs-jssig.js'></script>
-    <script src="../../bundles/scatterjs-core.min.js"></script>
+    <script src="../../bundles/arisenidjs-core.min.js"></script>
 
     <!--<script>-->
 	    <!--window.lynxMobile = {-->
@@ -29,8 +29,8 @@
 		            <!--publicKey:'EOS8RFgis6KAbChv89L3ibPmSH9raqN3iaFWbyLrDgmAuV3rsZ9SM'-->
 	            <!--};-->
 
-	            <!--ScatterJS.scatter.identity = identity;-->
-	            <!--console.log(ScatterJS.scatter.identity);-->
+	            <!--ArisenidJS.arisenid.identity = identity;-->
+	            <!--console.log(ArisenidJS.arisenid.identity);-->
 	            <!--return identity;-->
             <!--},-->
             <!--requestArbitrarySignature:x => { console.log(x); },-->
@@ -38,8 +38,8 @@
 	    <!--};-->
     <!--</script>-->
 
-    <script src="../../bundles/scatterjs-plugin-eosjs2.min.js"></script>
-    <script src="../../bundles/scatterjs-plugin-lynx.min.js"></script>
+    <script src="../../bundles/arisenidjs-plugin-eosjs2.min.js"></script>
+    <script src="../../bundles/arisenidjs-plugin-lynx.min.js"></script>
 </head>
 <body>
 <div id="status"></div>
@@ -57,17 +57,17 @@
 
 	const vConsole = new VConsole({});
 
-	ScatterJS.plugins( new ScatterEOS(), new ScatterLynx({Api:eosjs_api.default, JsonRpc:eosjs_jsonrpc.default, textEncoder:() => {}}) );
+	ArisenidJS.plugins( new ArisenidEOS(), new ArisenidLynx({Api:eosjs_api.default, JsonRpc:eosjs_jsonrpc.default, textEncoder:() => {}}) );
 
-	const network = ScatterJS.Network.fromJson({
+	const network = ArisenidJS.Network.fromJson({
 		blockchain:'eos',
 		chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
-		host:'nodes.get-scatter.com',
+		host:'nodes.get-arisenid.com',
 		port:443,
 		protocol:'https'
 	});
 
-    // const network = ScatterJS.Network.fromJson({
+    // const network = ArisenidJS.Network.fromJson({
     //     blockchain:'eos',
     //     chainId:'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
     //     host:'192.168.1.6',
@@ -75,7 +75,7 @@
     //     protocol:'http'
     // });
 
-	// const network = ScatterJS.Network.fromJson({
+	// const network = ArisenidJS.Network.fromJson({
     //     blockchain:'eos',
     //     chainId:'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473',
     //     host:'dev.cryptolions.io',
@@ -83,19 +83,19 @@
     //     protocol:'http'
 	// });
 
-	let scatter = null;
+	let arisenid = null;
 
 	const rpc = new eosjs_jsonrpc.default(network.fullhost());
 
 	const getApi = (signatureProvider) => new eosjs_api.default({ rpc, signatureProvider });
 
-	const getScatterEos = () => scatter.eos(network, eosjs_api.default, {rpc});
+	const getArisenidEos = () => arisenid.eos(network, eosjs_api.default, {rpc});
 
 	const setStatus = () => {
 		const status = document.getElementById('status');
-		if(!scatter) return status.innerText = 'No Scatter';
-		if(!scatter.identity) return status.innerText = 'No Identity';
-		status.innerText = scatter.identity.name;
+		if(!arisenid) return status.innerText = 'No Arisenid';
+		if(!arisenid.identity) return status.innerText = 'No Identity';
+		status.innerText = arisenid.identity.name;
 	};
 
 	setStatus();
@@ -103,22 +103,22 @@
 		setStatus();
 	}, 50);
 
-	ScatterJS.scatter.connect('eosjs2-test', {network}).then(connected => {
+	ArisenidJS.arisenid.connect('eosjs2-test', {network}).then(connected => {
 		console.log('connect', connected);
 		if(!connected) return false;
-		scatter = ScatterJS.scatter;
-		console.log('scatter', ScatterJS);
+		arisenid = ArisenidJS.arisenid;
+		console.log('arisenid', ArisenidJS);
 	});
 
 	window.login = async () => {
-		console.log('conn', ScatterJS.isConnected());
-		console.log('login', await scatter.login());
-		console.log('scatter', ScatterJS);
+		console.log('conn', ArisenidJS.isConnected());
+		console.log('login', await arisenid.login());
+		console.log('arisenid', ArisenidJS);
 	}
-	window.logout = () => scatter.logout();
+	window.logout = () => arisenid.logout();
 
 	window.transfer = async () => {
-		const api = getScatterEos();
+		const api = getArisenidEos();
 		tryTransfer(api);
 	};
 
@@ -131,12 +131,12 @@
 			'SOME_PRIVATE_KEY',
         ]);
 
-		const signatureProvider = scatter.eosMultiHook(network, [localSigner]);
+		const signatureProvider = arisenid.eosMultiHook(network, [localSigner]);
 
 		const api = new eosjs_api.default({ rpc, signatureProvider });
-		const from = scatter.identity.accounts[0];
+		const from = arisenid.identity.accounts[0];
 		try {
-			const from = scatter.account('eos');
+			const from = arisenid.account('eos');
 			const result = await api.transact({
 				actions: [{
 					account: 'eosio.token',
@@ -187,7 +187,7 @@
 	};
 
 	window.hookTransfer = async () => {
-		const api = getApi(scatter.eosHook(network));
+		const api = getApi(arisenid.eosHook(network));
 		tryTransfer(api);
 	};
 
@@ -196,12 +196,12 @@
 		let randomString = '';
 		for(let i = 0; i < 12; i++) randomString += getRandom();
 		console.log('randomString', randomString);
-		await scatter.authenticate(randomString).then(res => console.log(res));
+		await arisenid.authenticate(randomString).then(res => console.log(res));
 	};
 
 	const tryTransfer = async api => {
 		try {
-			const from = scatter.account('eos');
+			const from = arisenid.account('eos');
 			const result = await api.transact({
 				actions: [{
 					account: 'eosio.token',

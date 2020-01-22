@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <script src='https://cdnjs.cloudflare.com/ajax/libs/vConsole/3.3.4/vconsole.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/eosjs@16.0.9/lib/eos.min.js"></script>
-    <script src="../../bundles/scatterjs-core.min.js"></script>
-    <script src="../../bundles/scatterjs-plugin-eosjs.min.js"></script>
+    <script src="../../bundles/arisenidjs-core.min.js"></script>
+    <script src="../../bundles/arisenidjs-plugin-eosjs.min.js"></script>
 
     <!--<script>-->
 		<!--window.lynxMobile = {-->
@@ -29,8 +29,8 @@
 					<!--publicKey:'EOS8RFgis6KAbChv89L3ibPmSH9raqN3iaFWbyLrDgmAuV3rsZ9SM'-->
 				<!--};-->
 
-				<!--ScatterJS.scatter.identity = identity;-->
-				<!--console.log(ScatterJS.scatter.identity);-->
+				<!--ArisenidJS.arisenid.identity = identity;-->
+				<!--console.log(ArisenidJS.arisenid.identity);-->
 				<!--return identity;-->
 			<!--},-->
 			<!--requestSetAccount:name => {},-->
@@ -38,11 +38,11 @@
 			<!--requestSignature:x => { console.log('sig', x); }-->
 		<!--};-->
     <!--</script>-->
-    <script src="../../bundles/scatterjs-plugin-lynx.min.js"></script>
+    <script src="../../bundles/arisenidjs-plugin-lynx.min.js"></script>
 </head>
 <body style="padding:20px 50px;">
 
-<h1>Scatter Basics</h1>
+<h1>Arisenid Basics</h1>
 
 <div id="status"></div>
 <img id="avatar" />
@@ -97,11 +97,11 @@
 
 <h1>Deep Link</h1>
 <p style="margin-top:-20px;">
-    Deep links will only work with a built version of Scatter, <br>
+    Deep links will only work with a built version of Arisenid, <br>
     not a live development version.
 </p>
 
-<a href="scatter://transfer?payload=safetransfer/0/eos/aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906/ramdeathtest">
+<a href="arisenid://transfer?payload=safetransfer/0/eos/aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906/ramdeathtest">
     <button>Donate with Deep Link</button>
 </a>
 
@@ -109,9 +109,9 @@
 	// const vConsole = new VConsole({});
 
     console.log(typeof Eos);
-	ScatterJS.plugins( new ScatterEOS(), new ScatterLynx(Eos) );
+	ArisenidJS.plugins( new ArisenidEOS(), new ArisenidLynx(Eos) );
 
-    const network2 = ScatterJS.Network.fromJson({
+    const network2 = ArisenidJS.Network.fromJson({
         blockchain:'eos',
         chainId:'e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473',
         host:'jungle2.cryptolions.io',
@@ -119,21 +119,21 @@
         protocol:'http'
     });
 
-   const network = ScatterJS.Network.fromJson({
+   const network = ArisenidJS.Network.fromJson({
 	   blockchain:'eos',
 	   chainId:'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',
-	   host:'nodes.get-scatter.com',
+	   host:'nodes.get-arisenid.com',
 	   port:443,
 	   protocol:'https'
    });
 
-    let scatter, eos;
+    let arisenid, eos;
 
     const setStatus = () => {
     	const status = document.getElementById('status');
-    	if(!scatter) return status.innerText = 'No Scatter';
-    	if(!scatter.identity) return status.innerText = 'No Identity';
-    	status.innerText = scatter.identity.name;
+    	if(!arisenid) return status.innerText = 'No Arisenid';
+    	if(!arisenid.identity) return status.innerText = 'No Identity';
+    	status.innerText = arisenid.identity.name;
     };
 
     setStatus();
@@ -141,72 +141,72 @@
 	    setStatus();
     }, 1);
 
-    ScatterJS.connect('LernaVanillaTest', {network, allowHttp:false}).then(async connected => {
+    ArisenidJS.connect('LernaVanillaTest', {network, allowHttp:false}).then(async connected => {
     	console.log('connected', connected);
         if(!connected) return false;
-        scatter = ScatterJS.scatter;
-        eos = scatter.eos(network, Eos);
+        arisenid = ArisenidJS.arisenid;
+        eos = arisenid.eos(network, Eos);
 
-        scatter.addEventHandler((event, payload) => {
+        arisenid.addEventHandler((event, payload) => {
             console.log('app event', event, payload);
         });
     });
 
     window.getVersion = async () => {
-        const version = await scatter.getVersion();
+        const version = await arisenid.getVersion();
         console.log('version', version);
     };
 
     window.login = async () => {
-	    // await ScatterJS.login();
-	    // eos = scatter.eos(network, Eos);
+	    // await ArisenidJS.login();
+	    // eos = arisenid.eos(network, Eos);
 
-	    ScatterJS.connect('LernaVanillaTest', {network, allowHttp:false}).then(async connected => {
+	    ArisenidJS.connect('LernaVanillaTest', {network, allowHttp:false}).then(async connected => {
 		    console.log('connected from dapp', connected);
 		    if(!connected) return false;
-		    scatter = ScatterJS.scatter;
-		    eos = scatter.eos(network, Eos);
-		    await ScatterJS.login();
+		    arisenid = ArisenidJS.arisenid;
+		    eos = arisenid.eos(network, Eos);
+		    await ArisenidJS.login();
 	    });
     };
 
     window.loginWithoutNetworks = async () => {
-        // await scatter.suggestNetwork(network);
-        await ScatterJS.login({accounts:[]});
+        // await arisenid.suggestNetwork(network);
+        await ArisenidJS.login({accounts:[]});
     };
 
     window.loginAll = async () => {
-        // await scatter.suggestNetwork(network);
-        await ScatterJS.suggestNetwork(network2);
-        await ScatterJS.loginAll({
+        // await arisenid.suggestNetwork(network);
+        await ArisenidJS.suggestNetwork(network2);
+        await ArisenidJS.loginAll({
 	        personal:['firstname', 'lastname', 'email'],
 	        location:['country', 'phone', 'address'],
 	        accounts:[network]
         });
-        console.log(ScatterJS.identity);
-        eos = scatter.eos(network, Eos);
+        console.log(ArisenidJS.identity);
+        eos = arisenid.eos(network, Eos);
     };
 
     window.loginWithRequirements = async () => {
-        await scatter.suggestNetwork(network);
-        await scatter.getIdentity({
+        await arisenid.suggestNetwork(network);
+        await arisenid.getIdentity({
             personal:['firstname', 'lastname', 'email'],
             location:['country', 'phone', 'address'],
             accounts:[network]
         })
-        console.log(scatter.identity);
-        eos = scatter.eos(network, Eos);
+        console.log(arisenid.identity);
+        eos = arisenid.eos(network, Eos);
     };
 
     window.updateIdentity = async () => {
-        const done = await scatter.updateIdentity({
+        const done = await arisenid.updateIdentity({
             name:'HelloWorld',
         })
         console.log('done', done);
     };
 
     window.getAvatar = async () => {
-        const avatar = await scatter.getAvatar()
+        const avatar = await arisenid.getAvatar()
         document.getElementById('avatar').src = avatar;
     };
 
@@ -215,20 +215,20 @@
     	let randomString = '';
     	for(let i = 0; i < 12; i++) randomString += getRandom();
     	console.log('randomString', randomString);
-        await scatter.authenticate(randomString).then(res => console.log('res', res)).catch(err => console.error(err));
+        await arisenid.authenticate(randomString).then(res => console.log('res', res)).catch(err => console.error(err));
     };
 
     window.authenticateSpecific = async () => {
     	const getRandom = () => Math.round(Math.random() * 8 + 1).toString();
     	let nonce = '';
     	for(let i = 0; i < 12; i++) nonce += getRandom();
-	    const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
+	    const account = arisenid.identity.accounts.find(x => x.blockchain === 'eos');
 
 	    // You can't use authenticate with Hardware Devices! Use the identity key in that instance.
-	    const publicKey = account.isHardware ? scatter.identity.publicKey : account.publicKey;
+	    const publicKey = account.isHardware ? arisenid.identity.publicKey : account.publicKey;
 
 	    const toSign = 'helloworldiamtheonethatknocks';
-        await scatter.authenticate(nonce, toSign, publicKey)
+        await arisenid.authenticate(nonce, toSign, publicKey)
             .then(res => {
             	const {ecc} = Eos.modules;
             	const shaData = ecc.sha256(
@@ -243,7 +243,7 @@
     };
 
 	 window.hardwareCapableProofs = async () => {
-		 const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
+		 const account = arisenid.identity.accounts.find(x => x.blockchain === 'eos');
 
 
 		 // We're going to catch a reference to the buffer
@@ -251,7 +251,7 @@
 		 const signProvider = async buf => buffer = buf;
 
 		 // NOTICE WE ARE PUTTING THE signProvider HERE!!!!!
-		 const contract = await eos.contract('scatterproof', {signProvider});
+		 const contract = await eos.contract('arisenidproof', {signProvider});
 
 		 // NOTICE THE BROADCAST FALSE!!!!!!!!!!
 		 const opts = { broadcast:false, authorization:[`${account.name}@${account.authority}`] };
@@ -269,7 +269,7 @@
 	 }
 
 	 window.updateAuth = async () => {
-		 const accounts = scatter.identity.accounts.filter(x => x.blockchain === 'eos');
+		 const accounts = arisenid.identity.accounts.filter(x => x.blockchain === 'eos');
 
 		 eos.transaction({
              actions:accounts.map(account => {
@@ -301,7 +301,7 @@
 	 }
 
 	 window.approveMSIG = async () => {
-		 const account = scatter.identity.accounts.filter(x => x.blockchain === 'eos')[0];
+		 const account = arisenid.identity.accounts.filter(x => x.blockchain === 'eos')[0];
 
 
 
@@ -326,24 +326,24 @@
 	 }
 
     window.logout = async () => {
-        await scatter.forgetIdentity();
+        await arisenid.forgetIdentity();
     };
 
 
     window.addToken = async () => {
 
-    	const token = ScatterJS.Token.fromJson({
+    	const token = ArisenidJS.Token.fromJson({
 		    blockchain:'eos',
             contract:'ridlridlcoin',
             symbol:'RIDL1',
             decimals:4
         })
 
-        await scatter.addToken(token);
+        await arisenid.addToken(token);
     };
 
     window.transfer = async () => {
-	    const account = ScatterJS.account('eos');
+	    const account = ArisenidJS.account('eos');
         const opts = { authorization:[`${account.name}@${account.authority}`], requiredFields:{} };
         eos.transfer(account.name, 'safetransfer', '0.0001 EOS', account.name, opts).then(trx => {
             console.log('trx', trx);
@@ -353,7 +353,7 @@
     };
 
     window.stableTransfer = async () => {
-	    const account = ScatterJS.account('eos');
+	    const account = ArisenidJS.account('eos');
         const opts = { authorization:[`${account.name}@${account.authority}`], requiredFields:{} };
 	    eos.contract('eosdtsttoken').then(contract => {
 		    contract.transfer(account.name, 'safetransfer', '1.0000 EOSDT', account.name, opts).then(trx => {
@@ -365,7 +365,7 @@
     };
 
     window.transferWithFields = async () => {
-        const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
+        const account = arisenid.identity.accounts.find(x => x.blockchain === 'eos');
         const requiredFields = {
         	personal:['firstname', 'lastname'],
             location:['address']
@@ -380,16 +380,16 @@
 
     window.donate = () => {
         const tokenDetails = {contract:'eosio.token', symbol:'EOS', memo:'testing memo field', decimals:4};
-        scatter.requestTransfer(network, 'eosio', '1.0000', tokenDetails).then(res => console.log(res));
+        arisenid.requestTransfer(network, 'eosio', '1.0000', tokenDetails).then(res => console.log(res));
     };
 
     window.donateFreely = () => {
         const tokenDetails = {contract:'eosio.token', symbol:'EOS', memo:'testing memo field', decimals:4};
-        scatter.requestTransfer(network, 'eosio', 0, tokenDetails).then(res => console.log(res));
+        arisenid.requestTransfer(network, 'eosio', 0, tokenDetails).then(res => console.log(res));
     };
 
     window.contract = () => {
-        const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
+        const account = arisenid.identity.accounts.find(x => x.blockchain === 'eos');
         const opts = { authorization:[`${account.name}@${account.authority}`] };
         eos.contract('wizardstoken').then(contract => {
             contract.createwizard(opts).then(trx => {
@@ -401,7 +401,7 @@
     }
 
     window.multi = () => {
-        const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
+        const account = arisenid.identity.accounts.find(x => x.blockchain === 'eos');
         const opts = { authorization:[`${account.name}@${account.authority}`] };
 
 	    eos
@@ -424,7 +424,7 @@
     };
 
     window.suggestNetwork = async () => {
-	    await scatter.suggestNetwork(ScatterJS.Network.fromJson({
+	    await arisenid.suggestNetwork(ArisenidJS.Network.fromJson({
 		    blockchain:'eos',
 		    chainId:'1',
 		    host:'not-real.com',
@@ -438,21 +438,21 @@
     }
 
     window.arbitrary = () => {
-	    const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
-        scatter.getArbitrarySignature(account.publicKey, 'This should be able to be signed by anything', 'Testing', false).then(signed => {
+	    const account = arisenid.identity.accounts.find(x => x.blockchain === 'eos');
+        arisenid.getArbitrarySignature(account.publicKey, 'This should be able to be signed by anything', 'Testing', false).then(signed => {
         	console.log('signed', signed);
         })
     }
 
     window.unsignableArbitrary = () => {
-	    const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
-        scatter.getArbitrarySignature(account.publicKey, 'hello_world_im_too_long_yo', 'Testing', false);
+	    const account = arisenid.identity.accounts.find(x => x.blockchain === 'eos');
+        arisenid.getArbitrarySignature(account.publicKey, 'hello_world_im_too_long_yo', 'Testing', false);
     }
 
 	 window.hasAccountFor = () => {
-		 scatter.hasAccountFor(network).then(res => {
+		 arisenid.hasAccountFor(network).then(res => {
 			 console.log('res', res);
-			 scatter.hasAccountFor({ host:'not-real.com', port:80, blockchain:'eos', chainId:'2' }).then(res => {
+			 arisenid.hasAccountFor({ host:'not-real.com', port:80, blockchain:'eos', chainId:'2' }).then(res => {
 				 console.log('should fail', res);
 			 }).catch(error => {
 				 console.log('should fail', error);
@@ -465,7 +465,7 @@
 
     let publicKey;
     window.getPublicKey = () => {
-        scatter.getPublicKey('eos').then(res => {
+        arisenid.getPublicKey('eos').then(res => {
 	        publicKey = res;
             console.log('res', res);
         }).catch(error => {
@@ -481,7 +481,7 @@
             publicKey
         };
 
-        scatter.linkAccount(account, network).then(res => {
+        arisenid.linkAccount(account, network).then(res => {
             console.log('res', res);
         }).catch(error => {
         	console.log('error', error)

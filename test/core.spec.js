@@ -1,4 +1,4 @@
-import ScatterJS from '../packages/core/src';
+import ArisenidJS from '../packages/core/src';
 import { assert } from 'chai';
 import 'mocha';
 
@@ -6,7 +6,7 @@ import 'mocha';
 describe('Core', () => {
 
 	it('should work', () => {
-		console.log('ScatterJS', ScatterJS);
+		console.log('ArisenidJS', ArisenidJS);
 	});
 
 });
